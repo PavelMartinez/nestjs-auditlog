@@ -24,7 +24,7 @@ createTests(
   createNestJSExpressServer,
   'OLTP HTTP Exporter',
   new AuditlogOltpHttpExporter('test', 'test', {
-    url: '127.0.0.1:4318',
+    url: 'http://127.0.0.1:4318',
   })
 );
 
@@ -33,7 +33,7 @@ createTests(
   createNestJSExpressServer,
   'OLTP GRPC Exporter',
   new AuditlogOltpGrpcExporter('test', 'test', {
-    url: '127.0.0.1:4317',
+    url: 'http://127.0.0.1:4317',
   })
 );
 

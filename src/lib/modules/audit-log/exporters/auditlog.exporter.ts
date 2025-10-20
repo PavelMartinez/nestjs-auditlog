@@ -1,14 +1,9 @@
 import { Logger, SeverityNumber } from '@opentelemetry/api-logs';
-import { Resource } from '@opentelemetry/resources';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import {
   LoggerProvider,
   SimpleLogRecordProcessor,
 } from '@opentelemetry/sdk-logs';
-import {
-  SEMRESATTRS_DEPLOYMENT_ENVIRONMENT,
-  SEMRESATTRS_SERVICE_NAME,
-  SEMRESATTRS_SERVICE_NAMESPACE,
-} from '@opentelemetry/semantic-conventions';
 
 import {
   IAuditLog,
@@ -29,19 +24,16 @@ export class AuditLogExporter implements IAuditLogExporter {
 
     if (!options.exporter) return;
 
-    const resource = new Resource({
-      [SEMRESATTRS_SERVICE_NAME]: options.serviceName,
-      [SEMRESATTRS_SERVICE_NAMESPACE]: options.serviceNamespace,
-      [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]: options.serviceEnvironmentName,
+    const resource = resourceFromAttributes({
+      'service.name': options.serviceName,
+      'service.namespace': options.serviceNamespace,
+      'deployment.environment': options.serviceEnvironmentName,
     });
 
     this.loggerProvider = new LoggerProvider({
       resource,
+      processors: [new SimpleLogRecordProcessor(options.exporter)],
     });
-
-    this.loggerProvider.addLogRecordProcessor(
-      new SimpleLogRecordProcessor(options.exporter)
-    );
 
     this.loggerOtel = this.loggerProvider.getLogger('default');
   }
@@ -50,7 +42,7 @@ export class AuditLogExporter implements IAuditLogExporter {
     return new AuditLogExporter(this.options);
   }
 
-  async startup() {}
+  async startup() { }
 
   async shutdown() {
     await this.loggerProvider.shutdown();

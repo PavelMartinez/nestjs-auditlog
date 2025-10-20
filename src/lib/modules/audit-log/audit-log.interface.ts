@@ -211,7 +211,7 @@ export interface IAuditLogClickHouseExporterOption
 }
 
 export interface IExporterConfig {
-  headers?: Partial<Record<string, unknown>>;
+  headers?: Record<string, string>;
   hostname?: string;
   url?: string;
   concurrencyLimit?: number;

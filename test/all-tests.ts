@@ -128,7 +128,7 @@ export const createTests = (
   test(`${rootTitle} - should work normally after setting up the library (using".forRoot()")`, async (t) => {
     const exporter = auditLogExporter.clone();
     const traceExporter = new TraceOtlpGrpcExporter('test', 'test', {
-      url: '127.0.0.1:4317',
+      url: 'http://127.0.0.1:4317',
     });
     const stub = sinon.stub(exporter, 'sendAuditLog');
 

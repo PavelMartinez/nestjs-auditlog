@@ -11,7 +11,7 @@ export const createNestJSExpressServer: NestJSTestingServerFactory = async (
 ) => {
   let { auditLogModule, traceModule } = params;
   const traceExporter = new TraceOtlpHttpExporter('test', 'test', {
-    url: '127.0.0.1:4318',
+    url: 'http://127.0.0.1:4318',
   });
 
   if (!traceModule) {
